@@ -1,0 +1,30 @@
+# ==== Output build Gradle ====
+.gradle/
+.kotlin/
+build/
+app/build/
+
+# ==== Konfigurasi spesifik mesin ====
+local.properties
+
+# ==== APK Play Store & arsip besar ====
+*.apk
+*.aab
+*.apks
+*.zip
+
+# ==== Hasil ekstraksi / dekompilasi (bisa dibuat ulang dari APK) ====
+/dex/
+*.dex
+/*.java
+
+# ==== Log, dump UI, tangkapan layar pengujian ====
+*.log
+/*.txt
+/*.xml
+/*.png
+/run/
+
+# ==== Catatan pribadi ====
+patching_play_store_untuk_menyembunyikan_game_section.md
+HANDOFF.md
