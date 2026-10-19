@@ -28,3 +28,9 @@ local.properties
 # ==== Catatan pribadi ====
 patching_play_store_untuk_menyembunyikan_game_section.md
 HANDOFF.md
+
+# ==== Keystore & kredensial signing (JANGAN PERNAH masuk history) ====
+keystore/
+*.jks
+*.keystore
+keystore.properties

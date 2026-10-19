@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Foreground: an eye with a slash (hidden sight) centered in the 108dp
+     adaptive-icon canvas; safe zone is the inner 66dp circle. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- eye outline -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M54,32 C40,32 28.5,40.5 24,54 C28.5,67.5 40,76 54,76 C68,76 79.5,67.5 84,54 C79.5,40.5 68,32 54,32 Z M54,69 C46.3,69 40,62.7 40,55 C40,47.3 46.3,41 54,41 C61.7,41 68,47.3 68,55 C68,62.7 61.7,69 54,69 Z" />
+    <!-- pupil -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M54,48 C50.1,48 47,51.1 47,55 C47,58.9 50.1,62 54,62 C57.9,62 61,58.9 61,55 C61,51.1 57.9,48 54,48 Z" />
+    <!-- slash (hidden) -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M30,74 L78,26 L84,32 L36,80 Z" />
+</vector>
