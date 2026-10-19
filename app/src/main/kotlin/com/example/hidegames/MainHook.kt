@@ -47,7 +47,7 @@ class MainHook : IXposedHookLoadPackage {
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
         if (lpparam.packageName != "com.android.vending") return
         val cl = lpparam.classLoader
-        GameFilter.install(lpparam)
+        NodeFilter.install(lpparam)
 
         val navCls: Class<*>
         val ifaceCls: Class<*>
