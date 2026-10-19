@@ -48,6 +48,7 @@ class MainHook : IXposedHookLoadPackage {
         if (lpparam.packageName != "com.android.vending") return
         val cl = lpparam.classLoader
         NodeFilter.install(lpparam)
+        LinkBlock.install(lpparam)
 
         val navCls: Class<*>
         val ifaceCls: Class<*>

@@ -155,7 +155,10 @@ object NodeFilter {
             if (isGame(doc)) {
                 val proto = runCatching { XposedHelpers.getObjectField(kid, "a") }.getOrNull() ?: continue
                 dropped.add(proto)
-                ids.add(runCatching { XposedHelpers.callMethod(doc, "bR").toString() }.getOrDefault("?"))
+                val pkg = runCatching { XposedHelpers.callMethod(doc, "bR").toString() }.getOrDefault("?")
+                ids.add(pkg)
+                // catat package game agar deep link ke game ini bisa diblokir (LinkBlock)
+                GameRegistry.remember(pkg)
             }
         }
 
@@ -179,7 +182,8 @@ object NodeFilter {
             if (!anomaly) normalLogged++
             log("node=${System.identityHashCode(node)} size=${list.size} kids=${kids.size} games=${ids.size} " +
                 "cascade=$cascaded matched=$matched " +
-                "unknown=$unknown allGone=$allGone -> ${filtered.size}" + (if (DRY_RUN) " (dry-run)" else ""))
+                "unknown=$unknown allGone=$allGone -> ${filtered.size}" +
+                (if (ids.isNotEmpty()) " ids=$ids" else "") + (if (DRY_RUN) " (dry-run)" else ""))
         }
         if (unknown > 0) maybeLeaky.add(node)
 
@@ -235,6 +239,7 @@ object NodeFilter {
 
     fun install(lpparam: XC_LoadPackage.LoadPackageParam) {
         val cl = lpparam.classLoader
+        GameRegistry.init(cl)
         val nodeCls = runCatching { XposedHelpers.findClass("bckc", cl) }.getOrNull()
         val docCls = runCatching { XposedHelpers.findClass("ahyg", cl) }.getOrNull()
         if (nodeCls == null || docCls == null) {
@@ -266,6 +271,8 @@ object NodeFilter {
 
         // Pantau pembuatan dokumen baru: begitu dokumen (yang mungkin telat) dibuat,
         // jadwalkan penyaringan ulang node yang tadinya belum punya dokumen.
+        // Sekaligus, bila dokumen ini adalah halaman detail game yang sedang dibuka,
+        // kenali dan tutup halamannya (blokir deep link / buka halaman game).
         var ctorCount = 0
         for (ctor in docCls.declaredConstructors) {
             try {
@@ -275,6 +282,15 @@ object NodeFilter {
                             scheduleRescan()
                         } catch (t: Throwable) {
                             // abaikan
+                        }
+                        try {
+                            val doc = param.thisObject ?: return
+                            val pkg = XposedHelpers.callMethod(doc, "bR") as? String ?: return
+                            if (LinkBlock.isWatched(pkg) && isGame(doc)) {
+                                GameRegistry.remember(pkg)
+                            }
+                        } catch (t: Throwable) {
+                            // dokumen mungkin belum lengkap; abaikan
                         }
                     }
                 })
